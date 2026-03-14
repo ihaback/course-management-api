@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="TextFile1.txt" />
+  </Folder>
+  <Project Path="Application/Application.csproj" Id="d4bee6a6-6ce4-4792-ba87-0571e3b441f1" />
+  <Project Path="Domain/Domain.csproj" Id="ab013dcc-724d-42b9-b71d-2d440961c5be" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="47f15ea0-2cbd-42ba-ab25-3ee9ae5619b7" />
+  <Project Path="Presentation/Presentation.csproj" />
+  <Project Path="Tests/Tests.csproj" Id="e6f8f3e5-8f95-475b-af11-e7288c40c90b" />
+</Solution>
