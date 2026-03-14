@@ -25,9 +25,9 @@ public sealed class CourseService(ICourseRepository courseRepository) : ICourseS
                 course.DurationInDays
             );
 
-            _ = await _courseRepository.AddAsync(newCourse, cancellationToken);
+            var createdCourse = await _courseRepository.AddAsync(newCourse, cancellationToken);
 
-            return Result<Course>.Ok(newCourse);
+            return Result<Course>.Ok(createdCourse);
         }
         catch (ArgumentException ex)
         {
