@@ -7,7 +7,7 @@ using Backend.Domain.Modules.CourseEventTypes.Models;
 
 namespace Backend.Application.Modules.CourseEventTypes;
 
-public class CourseEventTypeService(ICourseEventTypeCache cache, ICourseEventTypeRepository courseEventTypeRepository) : ICourseEventTypeService
+public sealed class CourseEventTypeService(ICourseEventTypeCache cache, ICourseEventTypeRepository courseEventTypeRepository) : ICourseEventTypeService
 {
     private readonly ICourseEventTypeCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     private readonly ICourseEventTypeRepository _courseEventTypeRepository = courseEventTypeRepository ?? throw new ArgumentNullException(nameof(courseEventTypeRepository));
@@ -51,11 +51,6 @@ public class CourseEventTypeService(ICourseEventTypeCache cache, ICourseEventTyp
             var courseEventTypes = await _cache.GetAllAsync(
                 token => _courseEventTypeRepository.GetAllAsync(token),
                 cancellationToken);
-
-            if (!courseEventTypes.Any())
-            {
-                return Result<IReadOnlyList<CourseEventType>>.Ok(courseEventTypes);
-            }
 
             return Result<IReadOnlyList<CourseEventType>>.Ok(courseEventTypes);
         }

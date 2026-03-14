@@ -6,7 +6,7 @@ using Backend.Domain.Modules.Locations.Models;
 
 namespace Backend.Application.Modules.Locations;
 
-public class LocationService(ILocationRepository locationRepository) : ILocationService
+public sealed class LocationService(ILocationRepository locationRepository) : ILocationService
 {
     private readonly ILocationRepository _locationRepository = locationRepository ?? throw new ArgumentNullException(nameof(locationRepository));
 
@@ -44,11 +44,6 @@ public class LocationService(ILocationRepository locationRepository) : ILocation
         try
         {
             var locations = await _locationRepository.GetAllAsync(cancellationToken);
-
-            if (!locations.Any())
-            {
-                return Result<IReadOnlyList<Location>>.Ok(locations);
-            }
 
             return Result<IReadOnlyList<Location>>.Ok(locations);
         }

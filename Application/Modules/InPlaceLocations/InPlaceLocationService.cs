@@ -6,7 +6,7 @@ using Backend.Domain.Modules.InPlaceLocations.Models;
 
 namespace Backend.Application.Modules.InPlaceLocations;
 
-public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRepository) : IInPlaceLocationService
+public sealed class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRepository) : IInPlaceLocationService
 {
     private readonly IInPlaceLocationRepository _inPlaceLocationRepository = inPlaceLocationRepository ?? throw new ArgumentNullException(nameof(inPlaceLocationRepository));
 
@@ -33,9 +33,9 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
         {
             return Result<InPlaceLocation>.BadRequest(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InPlaceLocation>.Error($"An error occurred while creating the in-place location: {ex.Message}");
+            return Result<InPlaceLocation>.Error("An error occurred while creating the in-place location.");
         }
     }
 
@@ -45,16 +45,11 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
         {
             var inPlaceLocations = await _inPlaceLocationRepository.GetAllAsync(cancellationToken);
 
-            if (!inPlaceLocations.Any())
-            {
-                return Result<IReadOnlyList<InPlaceLocation>>.Ok(inPlaceLocations);
-            }
-
             return Result<IReadOnlyList<InPlaceLocation>>.Ok(inPlaceLocations);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<IReadOnlyList<InPlaceLocation>>.Error($"An error occurred while retrieving in-place locations: {ex.Message}");
+            return Result<IReadOnlyList<InPlaceLocation>>.Error("An error occurred while retrieving in-place locations.");
         }
     }
 
@@ -76,9 +71,9 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
 
             return Result<InPlaceLocation>.Ok(inPlaceLocation);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InPlaceLocation>.Error($"An error occurred while retrieving the in-place location: {ex.Message}");
+            return Result<InPlaceLocation>.Error("An error occurred while retrieving the in-place location.");
         }
     }
 
@@ -93,16 +88,11 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
 
             var inPlaceLocations = await _inPlaceLocationRepository.GetInPlaceLocationsByLocationIdAsync(locationId, cancellationToken);
 
-            if (!inPlaceLocations.Any())
-            {
-                return Result<IReadOnlyList<InPlaceLocation>>.Ok(inPlaceLocations);
-            }
-
             return Result<IReadOnlyList<InPlaceLocation>>.Ok(inPlaceLocations);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<IReadOnlyList<InPlaceLocation>>.Error($"An error occurred while retrieving in-place locations: {ex.Message}");
+            return Result<IReadOnlyList<InPlaceLocation>>.Error("An error occurred while retrieving in-place locations.");
         }
     }
 
@@ -149,9 +139,9 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
         {
             return Result<InPlaceLocation>.Conflict("Cannot update because the requested location reference is invalid.");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InPlaceLocation>.Error($"An error occurred while updating the in-place location: {ex.Message}");
+            return Result<InPlaceLocation>.Error("An error occurred while updating the in-place location.");
         }
     }
 
@@ -185,9 +175,9 @@ public class InPlaceLocationService(IInPlaceLocationRepository inPlaceLocationRe
 
             return Result<bool>.Ok(true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<bool>.Error($"An error occurred while deleting the in-place location: {ex.Message}");
+            return Result<bool>.Error("An error occurred while deleting the in-place location.");
         }
     }
 }

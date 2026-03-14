@@ -58,7 +58,7 @@ public sealed class PaymentMethodService(IPaymentMethodCache cache, IPaymentMeth
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<PaymentMethodModel>.BadRequest("Id must be greater than zero.");
 
             var paymentMethod = await _cache.GetByIdAsync(
                 id,
@@ -84,7 +84,7 @@ public sealed class PaymentMethodService(IPaymentMethodCache cache, IPaymentMeth
         try
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name is required.", nameof(name));
+                return Result<PaymentMethodModel>.BadRequest("Name is required.");
 
             var paymentMethod = await _cache.GetByNameAsync(
                 name,
@@ -140,7 +140,7 @@ public sealed class PaymentMethodService(IPaymentMethodCache cache, IPaymentMeth
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<bool>.BadRequest("Id must be greater than zero.");
 
             var existingPaymentMethod = await _repository.GetByIdAsync(id, cancellationToken);
             if (existingPaymentMethod == null)

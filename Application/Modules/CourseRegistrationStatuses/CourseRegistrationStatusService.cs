@@ -7,7 +7,7 @@ using Backend.Domain.Modules.CourseRegistrationStatuses.Models;
 
 namespace Backend.Application.Modules.CourseRegistrationStatuses;
 
-public class CourseRegistrationStatusService(ICourseRegistrationStatusCache cache, ICourseRegistrationStatusRepository repository) : ICourseRegistrationStatusService
+public sealed class CourseRegistrationStatusService(ICourseRegistrationStatusCache cache, ICourseRegistrationStatusRepository repository) : ICourseRegistrationStatusService
 {
     private readonly ICourseRegistrationStatusCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     private readonly ICourseRegistrationStatusRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -64,7 +64,7 @@ public class CourseRegistrationStatusService(ICourseRegistrationStatusCache cach
         try
         {
             if (id < 0)
-                throw new ArgumentException("Id must be zero or positive.", nameof(id));
+                return Result<CourseRegistrationStatus>.BadRequest("Id must be zero or positive.");
 
             var status = await _cache.GetByIdAsync(
                 id,
@@ -156,7 +156,7 @@ public class CourseRegistrationStatusService(ICourseRegistrationStatusCache cach
         try
         {
             if (id < 0)
-                throw new ArgumentException("Id must be zero or positive.", nameof(id));
+                return Result<bool>.BadRequest("Id must be zero or positive.");
 
             var existingStatus = await _repository.GetByIdAsync(id, cancellationToken);
 

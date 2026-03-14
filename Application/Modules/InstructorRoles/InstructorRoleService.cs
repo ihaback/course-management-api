@@ -7,7 +7,7 @@ using Backend.Domain.Modules.InstructorRoles.Models;
 
 namespace Backend.Application.Modules.InstructorRoles;
 
-public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRepository repository) : IInstructorRoleService
+public sealed class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRepository repository) : IInstructorRoleService
 {
     private readonly IInstructorRoleCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     private readonly IInstructorRoleRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -32,9 +32,9 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
         {
             return Result<InstructorRole>.BadRequest(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InstructorRole>.Error($"An error occurred while creating the instructor role: {ex.Message}");
+            return Result<InstructorRole>.Error("An error occurred while creating the instructor role.");
         }
     }
 
@@ -47,9 +47,9 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
                 cancellationToken);
             return Result<IReadOnlyList<InstructorRole>>.Ok(roles);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<IReadOnlyList<InstructorRole>>.Error($"An error occurred while retrieving instructor roles: {ex.Message}");
+            return Result<IReadOnlyList<InstructorRole>>.Error("An error occurred while retrieving instructor roles.");
         }
     }
 
@@ -57,7 +57,7 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
     {
         try
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return Result<InstructorRole>.BadRequest("Id must be greater than zero.");
             }
@@ -73,9 +73,9 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
 
             return Result<InstructorRole>.Ok(role);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InstructorRole>.Error($"An error occurred while retrieving the instructor role: {ex.Message}");
+            return Result<InstructorRole>.Error("An error occurred while retrieving the instructor role.");
         }
     }
 
@@ -88,7 +88,7 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
                 return Result<InstructorRole>.BadRequest("Role cannot be null.");
             }
 
-            if (input.Id < 1)
+            if (input.Id <= 0)
             {
                 return Result<InstructorRole>.BadRequest("Id must be greater than zero.");
             }
@@ -115,9 +115,9 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
         {
             return Result<InstructorRole>.BadRequest(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InstructorRole>.Error($"An error occurred while updating the instructor role: {ex.Message}");
+            return Result<InstructorRole>.Error("An error occurred while updating the instructor role.");
         }
     }
 
@@ -125,7 +125,7 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
     {
         try
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return Result<bool>.BadRequest("Id must be greater than zero.");
             }
@@ -150,9 +150,9 @@ public class InstructorRoleService(IInstructorRoleCache cache, IInstructorRoleRe
         {
             return Result<bool>.Conflict($"Cannot delete instructor role with ID '{id}' because it is in use.");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<bool>.Error($"An error occurred while deleting the instructor role: {ex.Message}");
+            return Result<bool>.Error("An error occurred while deleting the instructor role.");
         }
     }
 }

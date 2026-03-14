@@ -58,7 +58,7 @@ public sealed class VenueTypeService(IVenueTypeCache cache, IVenueTypeRepository
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<VenueType>.BadRequest("Id must be greater than zero.");
 
             var venueType = await _cache.GetByIdAsync(
                 id,
@@ -84,7 +84,7 @@ public sealed class VenueTypeService(IVenueTypeCache cache, IVenueTypeRepository
         try
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name is required.", nameof(name));
+                return Result<VenueType>.BadRequest("Name is required.");
 
             var venueType = await _cache.GetByNameAsync(
                 name,
@@ -140,7 +140,7 @@ public sealed class VenueTypeService(IVenueTypeCache cache, IVenueTypeRepository
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<bool>.BadRequest("Id must be greater than zero.");
 
             var existingVenueType = await _repository.GetByIdAsync(id, cancellationToken);
             if (existingVenueType == null)

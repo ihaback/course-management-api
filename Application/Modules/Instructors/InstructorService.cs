@@ -41,9 +41,9 @@ public sealed class InstructorService(IInstructorRepository instructorRepository
         {
             return Result<Instructor>.BadRequest(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<Instructor>.Error($"An error occurred while creating the instructor: {ex.Message}");
+            return Result<Instructor>.Error("An error occurred while creating the instructor.");
         }
     }
 
@@ -55,9 +55,9 @@ public sealed class InstructorService(IInstructorRepository instructorRepository
 
             return Result<IReadOnlyList<Instructor>>.Ok(instructors);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<IReadOnlyList<Instructor>>.Error($"An error occurred while retrieving instructors: {ex.Message}");
+            return Result<IReadOnlyList<Instructor>>.Error("An error occurred while retrieving instructors.");
         }
     }
 
@@ -89,9 +89,9 @@ public sealed class InstructorService(IInstructorRepository instructorRepository
         {
             return Result<InstructorDetails>.NotFound(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<InstructorDetails>.Error($"An error occurred while retrieving the instructor: {ex.Message}");
+            return Result<InstructorDetails>.Error("An error occurred while retrieving the instructor.");
         }
     }
 
@@ -136,9 +136,9 @@ public sealed class InstructorService(IInstructorRepository instructorRepository
         {
             return Result<Instructor>.BadRequest(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<Instructor>.Error($"An error occurred while updating the instructor: {ex.Message}");
+            return Result<Instructor>.Error("An error occurred while updating the instructor.");
         }
     }
 
@@ -176,9 +176,9 @@ public sealed class InstructorService(IInstructorRepository instructorRepository
         {
             return Result<bool>.NotFound(ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Result<bool>.Error($"An error occurred while deleting the instructor: {ex.Message}");
+            return Result<bool>.Error("An error occurred while deleting the instructor.");
         }
     }
 }

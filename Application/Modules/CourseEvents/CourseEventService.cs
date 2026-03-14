@@ -9,7 +9,7 @@ using Backend.Domain.Modules.VenueTypes.Contracts;
 
 namespace Backend.Application.Modules.CourseEvents;
 
-public class CourseEventService(
+public sealed class CourseEventService(
     ICourseEventRepository courseEventRepository,
     ICourseRepository courseRepository,
     ICourseEventTypeRepository courseEventTypeRepository,

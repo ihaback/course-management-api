@@ -8,7 +8,7 @@ using Backend.Domain.Modules.Participants.Models;
 
 namespace Backend.Application.Modules.Participants;
 
-public class ParticipantService(
+public sealed class ParticipantService(
     IParticipantRepository participantRepository,
     IParticipantContactTypeRepository participantContactTypeRepository) : IParticipantService
 {
@@ -57,11 +57,6 @@ public class ParticipantService(
         try
         {
             var participants = await _participantRepository.GetAllAsync(cancellationToken);
-
-            if (!participants.Any())
-            {
-                return Result<IReadOnlyList<Participant>>.Ok(participants);
-            }
 
             return Result<IReadOnlyList<Participant>>.Ok(participants);
         }

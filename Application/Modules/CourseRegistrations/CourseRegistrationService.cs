@@ -12,7 +12,7 @@ using Backend.Domain.Modules.Participants.Contracts;
 
 namespace Backend.Application.Modules.CourseRegistrations;
 
-public class CourseRegistrationService(
+public sealed class CourseRegistrationService(
     ICourseRegistrationRepository courseRegistrationRepository,
     IParticipantRepository participantRepository,
     ICourseEventRepository courseEventRepository,
@@ -96,11 +96,6 @@ public class CourseRegistrationService(
         {
             var courseRegistrations = await _courseRegistrationRepository.GetAllAsync(cancellationToken);
 
-            if (!courseRegistrations.Any())
-            {
-                return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
-            }
-
             return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
         }
         catch (Exception)
@@ -164,11 +159,6 @@ public class CourseRegistrationService(
 
             var courseRegistrations = await _courseRegistrationRepository.GetCourseRegistrationsByParticipantIdAsync(participantId, cancellationToken);
 
-            if (!courseRegistrations.Any())
-            {
-                return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
-            }
-
             return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
         }
         catch (Exception)
@@ -187,11 +177,6 @@ public class CourseRegistrationService(
             }
 
             var courseRegistrations = await _courseRegistrationRepository.GetCourseRegistrationsByCourseEventIdAsync(courseEventId, cancellationToken);
-
-            if (!courseRegistrations.Any())
-            {
-                return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
-            }
 
             return Result<IReadOnlyList<CourseRegistration>>.Ok(courseRegistrations);
         }

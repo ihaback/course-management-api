@@ -58,7 +58,7 @@ public sealed class ParticipantContactTypeService(IParticipantContactTypeCache c
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<ParticipantContactType>.BadRequest("Id must be greater than zero.");
 
             var participantContactType = await _cache.GetByIdAsync(
                 id,
@@ -84,7 +84,7 @@ public sealed class ParticipantContactTypeService(IParticipantContactTypeCache c
         try
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name is required.", nameof(name));
+                return Result<ParticipantContactType>.BadRequest("Name is required.");
 
             var participantContactType = await _cache.GetByNameAsync(
                 name,
@@ -140,7 +140,7 @@ public sealed class ParticipantContactTypeService(IParticipantContactTypeCache c
         try
         {
             if (id <= 0)
-                throw new ArgumentException("Id must be greater than zero.", nameof(id));
+                return Result<bool>.BadRequest("Id must be greater than zero.");
 
             var existingParticipantContactType = await _repository.GetByIdAsync(id, cancellationToken);
             if (existingParticipantContactType == null)
