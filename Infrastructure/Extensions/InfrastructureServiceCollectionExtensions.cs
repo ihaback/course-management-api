@@ -1,5 +1,4 @@
 using Backend.Infrastructure.Persistence.Contexts;
-using Backend.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

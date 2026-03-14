@@ -14,7 +14,7 @@ using Backend.Domain.Modules.VenueTypes.Contracts;
 using Backend.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Backend.Infrastructure.Persistence.Repositories;
+namespace Backend.Infrastructure.Extensions;
 
 public static class RepositoryRegistrationExtension
 {
