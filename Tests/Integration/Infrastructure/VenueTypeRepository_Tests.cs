@@ -1,4 +1,5 @@
 using Backend.Domain.Modules.CourseEvents.Models;
+using Backend.Domain.Modules.CourseEventTypes.Models;
 using Backend.Domain.Modules.VenueTypes.Models;
 using Backend.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -84,8 +85,8 @@ public class VenueTypeRepository_Tests(SqliteInMemoryFixture fixture)
                 DateTime.UtcNow.AddDays(1),
                 100m,
                 10,
-                type.Id,
-                VenueType.Reconstitute(venueType.Id, venueType.Name)),
+                VenueType.Reconstitute(venueType.Id, venueType.Name),
+                CourseEventType.Reconstitute(type.Id, "Type")),
             CancellationToken.None);
 
         var inUse = await venueTypeRepo.IsInUseAsync(venueType.Id, CancellationToken.None);

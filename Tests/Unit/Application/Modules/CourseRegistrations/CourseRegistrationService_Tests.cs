@@ -3,10 +3,12 @@ using Backend.Application.Modules.CourseRegistrations;
 using Backend.Application.Modules.CourseRegistrations.Inputs;
 using Backend.Domain.Modules.CourseEvents.Contracts;
 using Backend.Domain.Modules.CourseEvents.Models;
+using Backend.Domain.Modules.CourseEventTypes.Models;
 using Backend.Domain.Modules.CourseRegistrationStatuses.Contracts;
 using Backend.Domain.Modules.CourseRegistrations.Contracts;
 using Backend.Domain.Modules.CourseRegistrations.Models;
 using Backend.Domain.Modules.CourseRegistrationStatuses.Models;
+using Backend.Domain.Modules.ParticipantContactTypes.Models;
 using Backend.Domain.Modules.Participants.Contracts;
 using Backend.Domain.Modules.Participants.Models;
 using Backend.Domain.Modules.PaymentMethods.Contracts;
@@ -35,14 +37,14 @@ public class CourseRegistrationService_Tests
             .Returns(ci =>
             {
                 var id = ci.Arg<Guid>();
-                return id == Guid.Empty ? null : Participant.Reconstitute(id, "A", "B", "a@b.com", "123");
+                return id == Guid.Empty ? null : Participant.Reconstitute(id, "A", "B", "a@b.com", "123", ParticipantContactType.Reconstitute(1, "Primary"));
             });
 
         ceRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(ci =>
             {
                 var id = ci.Arg<Guid>();
-                return id == Guid.Empty ? null : CourseEvent.Reconstitute(id, Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson"));
+                return id == Guid.Empty ? null : CourseEvent.Reconstitute(id, Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"));
             });
 
         statusRepo.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())

@@ -24,16 +24,16 @@ public class InstructorRepository(CoursesOnlineDbContext context)
         {
             Id = instructor.Id,
             Name = instructor.Name,
-            InstructorRoleId = instructor.InstructorRoleId
+            InstructorRoleId = instructor.Role.Id
         };
 
     public override async Task<Instructor> AddAsync(Instructor instructor, CancellationToken cancellationToken)
     {
         var roleExists = await _context.InstructorRoles
             .AsNoTracking()
-            .SingleOrDefaultAsync(r => r.Id == instructor.InstructorRoleId, cancellationToken);
+            .SingleOrDefaultAsync(r => r.Id == instructor.Role.Id, cancellationToken);
         if (roleExists == null)
-            throw new KeyNotFoundException($"Instructor role '{instructor.InstructorRoleId}' not found.");
+            throw new KeyNotFoundException($"Instructor role '{instructor.Role.Id}' not found.");
 
         var entity = ToEntity(instructor);
         _context.Instructors.Add(entity);
@@ -79,16 +79,16 @@ public class InstructorRepository(CoursesOnlineDbContext context)
     {
         var roleEntity = await _context.InstructorRoles
             .AsNoTracking()
-            .SingleOrDefaultAsync(r => r.Id == instructor.InstructorRoleId, cancellationToken);
+            .SingleOrDefaultAsync(r => r.Id == instructor.Role.Id, cancellationToken);
         if (roleEntity == null)
-            throw new KeyNotFoundException($"Instructor role '{instructor.InstructorRoleId}' not found.");
+            throw new KeyNotFoundException($"Instructor role '{instructor.Role.Id}' not found.");
 
         var entity = await _context.Instructors.SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
         if (entity == null)
             throw new KeyNotFoundException($"Instructor '{instructor.Id}' not found.");
 
         entity.Name = instructor.Name;
-        entity.InstructorRoleId = instructor.InstructorRoleId;
+        entity.InstructorRoleId = instructor.Role.Id;
         await _context.SaveChangesAsync(cancellationToken);
 
         var role = InstructorRole.Reconstitute(roleEntity.Id, roleEntity.Name);

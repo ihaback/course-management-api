@@ -13,8 +13,6 @@ public sealed class CourseEvent
     public DateTime EventDate { get; private set; }
     public Price Price { get; private set; } = null!;
     public int Seats { get; private set; }
-    public int CourseEventTypeId { get; private set; }
-    public int VenueTypeId { get; private set; }
     public CourseEventType CourseEventType { get; private set; }
     public VenueType VenueType { get; private set; }
 
@@ -26,16 +24,14 @@ public sealed class CourseEvent
         DateTime eventDate,
         Price price,
         int seats,
-        int courseEventTypeId,
         VenueType venueType,
-        CourseEventType? courseEventType = null,
-        VenueType? resolvedVenueType = null)
+        CourseEventType? courseEventType = null)
     {
         if (id == Guid.Empty)
             throw new ArgumentException("CourseEvent id cannot be empty.", nameof(id));
 
         Id = id;
-        SetValues(courseId, eventDate, price, seats, courseEventTypeId, venueType, courseEventType, resolvedVenueType);
+        SetValues(courseId, eventDate, price, seats, venueType, courseEventType);
     }
 
     public static CourseEvent Create(
@@ -43,14 +39,12 @@ public sealed class CourseEvent
         DateTime eventDate,
         decimal price,
         int seats,
-        int courseEventTypeId,
         VenueType venueType,
-        CourseEventType? courseEventType = null,
-        VenueType? resolvedVenueType = null)
+        CourseEventType courseEventType)
     {
         if (price < 0)
             throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative.");
-        return new(Guid.NewGuid(), courseId, eventDate, Price.Create(price), seats, courseEventTypeId, venueType, courseEventType, resolvedVenueType);
+        return new(Guid.NewGuid(), courseId, eventDate, Price.Create(price), seats, venueType, courseEventType);
     }
 
     public static CourseEvent Reconstitute(
@@ -59,14 +53,12 @@ public sealed class CourseEvent
         DateTime eventDate,
         decimal price,
         int seats,
-        int courseEventTypeId,
         VenueType venueType,
-        CourseEventType? courseEventType = null,
-        VenueType? resolvedVenueType = null)
+        CourseEventType courseEventType)
     {
         if (price < 0)
             throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative.");
-        return new(id, courseId, eventDate, Price.Create(price), seats, courseEventTypeId, venueType, courseEventType, resolvedVenueType);
+        return new(id, courseId, eventDate, Price.Create(price), seats, venueType, courseEventType);
     }
 
     public void Update(
@@ -74,14 +66,12 @@ public sealed class CourseEvent
         DateTime eventDate,
         decimal price,
         int seats,
-        int courseEventTypeId,
         VenueType venueType,
-        CourseEventType? courseEventType = null,
-        VenueType? resolvedVenueType = null)
+        CourseEventType courseEventType)
     {
         if (price < 0)
             throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative.");
-        SetValues(courseId, eventDate, Price.Create(price), seats, courseEventTypeId, venueType, courseEventType, resolvedVenueType);
+        SetValues(courseId, eventDate, Price.Create(price), seats, venueType, courseEventType);
     }
 
     [MemberNotNull(nameof(CourseEventType), nameof(VenueType))]
@@ -90,10 +80,8 @@ public sealed class CourseEvent
         DateTime eventDate,
         Price price,
         int seats,
-        int courseEventTypeId,
         VenueType venueType,
-        CourseEventType? courseEventType,
-        VenueType? resolvedVenueType)
+        CourseEventType? courseEventType)
     {
         if (courseId == Guid.Empty)
             throw new ArgumentException("Course id cannot be empty.", nameof(courseId));
@@ -102,21 +90,14 @@ public sealed class CourseEvent
             throw new ArgumentException("Event date must be specified.", nameof(eventDate));
 
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(seats);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(courseEventTypeId);
         ArgumentNullException.ThrowIfNull(venueType);
-
-        if (courseEventType is not null && courseEventType.Id != courseEventTypeId)
-            throw new ArgumentException("Course event type ID mismatch.", nameof(courseEventType));
-        if (resolvedVenueType is not null && resolvedVenueType.Id != venueType.Id)
-            throw new ArgumentException("Venue type ID mismatch.", nameof(resolvedVenueType));
+        ArgumentNullException.ThrowIfNull(courseEventType);
 
         CourseId = courseId;
         EventDate = eventDate;
         Price = price;
         Seats = seats;
-        CourseEventTypeId = courseEventTypeId;
-        VenueTypeId = venueType.Id;
-        CourseEventType = courseEventType ?? CourseEventType.Reconstitute(courseEventTypeId, $"Type {courseEventTypeId}");
-        VenueType = resolvedVenueType ?? VenueType.Reconstitute(venueType.Id, venueType.Name);
+        CourseEventType = courseEventType;
+        VenueType = venueType;
     }
 }

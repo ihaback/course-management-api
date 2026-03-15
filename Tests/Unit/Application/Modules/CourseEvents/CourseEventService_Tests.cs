@@ -69,7 +69,7 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var courseId = Guid.NewGuid();
         var date = DateTime.UtcNow.AddDays(10);
-        var created = CourseEvent.Reconstitute(Guid.NewGuid(), courseId, date, 100, 10, 1, VenueType.Reconstitute(1, "InPerson"));
+        var created = CourseEvent.Reconstitute(Guid.NewGuid(), courseId, date, 100, 10, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"));
         eventRepo.AddAsync(Arg.Any<CourseEvent>(), Arg.Any<CancellationToken>()).Returns(created);
 
         var service = CreateService(eventRepo);
@@ -182,8 +182,8 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var events = new List<CourseEvent>
         {
-            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson")),
-            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(2), 20, 10, 1, VenueType.Reconstitute(1, "InPerson"))
+            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")),
+            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(2), 20, 10, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"))
         };
         eventRepo.GetAllAsync(Arg.Any<CancellationToken>()).Returns(events);
 
@@ -222,14 +222,14 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var eventId = Guid.NewGuid();
         var courseId = Guid.NewGuid();
-        var existing = CourseEvent.Reconstitute(eventId, courseId, DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson"));
-        var updated = CourseEvent.Reconstitute(eventId, courseId, DateTime.UtcNow.AddDays(2), 20, 8, 2, VenueType.Reconstitute(1, "InPerson"));
+        var existing = CourseEvent.Reconstitute(eventId, courseId, DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"));
+        var updated = CourseEvent.Reconstitute(eventId, courseId, DateTime.UtcNow.AddDays(2), 20, 8, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(2, "Type"));
 
         eventRepo.GetByIdAsync(eventId, Arg.Any<CancellationToken>()).Returns(existing);
         eventRepo.UpdateAsync(Arg.Any<Guid>(), Arg.Any<CourseEvent>(), Arg.Any<CancellationToken>()).Returns(updated);
 
         var service = CreateService(eventRepo);
-        var input = new UpdateCourseEventInput(eventId, courseId, updated.EventDate, updated.Price.Value, updated.Seats, updated.CourseEventTypeId, 1);
+        var input = new UpdateCourseEventInput(eventId, courseId, updated.EventDate, updated.Price.Value, updated.Seats, updated.CourseEventType.Id, 1);
 
         var result = await service.UpdateCourseEventAsync(input);
 
@@ -261,7 +261,7 @@ public class CourseEventService_Tests
         courseRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns((Course?)null);
         eventRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson")));
+            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
 
         var typeRepo = Substitute.For<ICourseEventTypeRepository>();
         typeRepo.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
@@ -284,7 +284,7 @@ public class CourseEventService_Tests
             .Returns((CourseEventType?)null);
 
         eventRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson")));
+            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
 
         var courseRepo = Substitute.For<ICourseRepository>();
         courseRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
@@ -304,7 +304,7 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var courseId = Guid.NewGuid();
         eventRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(1), 10, 5, 1, VenueType.Reconstitute(1, "InPerson")));
+            .Returns(CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(1), 10, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
 
         var service = CreateService(eventRepo);
         var input = new UpdateCourseEventInput(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(1), -1, 5, 1, 1);
@@ -348,7 +348,7 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var eventId = Guid.NewGuid();
         eventRepo.GetByIdAsync(eventId, Arg.Any<CancellationToken>())
-            .Returns(CourseEvent.Reconstitute(eventId, Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 100, 10, 1, VenueType.Reconstitute(1, "InPerson")));
+            .Returns(CourseEvent.Reconstitute(eventId, Guid.NewGuid(), DateTime.UtcNow.AddDays(1), 100, 10, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
         eventRepo.HasRegistrationsAsync(eventId, Arg.Any<CancellationToken>())
             .Returns(true);
 
@@ -366,7 +366,7 @@ public class CourseEventService_Tests
         var eventRepo = Substitute.For<ICourseEventRepository>();
         var eventId = Guid.NewGuid();
         eventRepo.GetByIdAsync(eventId, Arg.Any<CancellationToken>())
-            .Returns(CourseEvent.Reconstitute(eventId, Guid.NewGuid(), DateTime.UtcNow.AddDays(2), 50, 5, 1, VenueType.Reconstitute(1, "InPerson")));
+            .Returns(CourseEvent.Reconstitute(eventId, Guid.NewGuid(), DateTime.UtcNow.AddDays(2), 50, 5, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
         eventRepo.HasRegistrationsAsync(eventId, Arg.Any<CancellationToken>())
             .Returns(false);
         eventRepo.RemoveAsync(eventId, Arg.Any<CancellationToken>()).Returns(true);

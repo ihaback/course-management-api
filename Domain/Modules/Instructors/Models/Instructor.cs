@@ -8,7 +8,6 @@ public sealed class Instructor
 {
     public Guid Id { get; }
     public string Name { get; private set; } = null!;
-    public int InstructorRoleId { get; private set; }
     public InstructorRole Role { get; private set; }
 
     /// <summary>For deserialization only — do not call directly. Use <see cref="Create"/> or <see cref="Reconstitute"/>.</summary>
@@ -46,6 +45,5 @@ public sealed class Instructor
 
         Name = name.Trim();
         Role = role;
-        InstructorRoleId = role.Id;
     }
 }

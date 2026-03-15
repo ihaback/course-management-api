@@ -52,8 +52,8 @@ public sealed class CourseEventService(
                 courseEvent.EventDate,
                 courseEvent.Price,
                 courseEvent.Seats,
-                courseEvent.CourseEventTypeId,
-                venueType);
+                venueType,
+                existingCourseEventType);
 
             var createdCourseEvent = await _courseEventRepository.AddAsync(newCourseEvent, cancellationToken);
 
@@ -105,7 +105,7 @@ public sealed class CourseEventService(
                 courseEvent.Price.Value,
                 courseEvent.Seats,
                 new CourseEventLookupItem(courseEvent.CourseEventType.Id, courseEvent.CourseEventType.Name),
-                new CourseEventLookupItem(courseEvent.VenueTypeId, courseEvent.VenueType.Name)
+                new CourseEventLookupItem(courseEvent.VenueType.Id, courseEvent.VenueType.Name)
             );
 
             return Result<CourseEventDetails>.Ok(details);
@@ -173,7 +173,6 @@ public sealed class CourseEventService(
                 courseEvent.EventDate,
                 courseEvent.Price,
                 courseEvent.Seats,
-                courseEvent.CourseEventTypeId,
                 venueType,
                 existingCourseEventType);
 

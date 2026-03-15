@@ -27,10 +27,8 @@ namespace Backend.Infrastructure.Persistence.EFC.Repositories
                 entity.EventDate,
                 entity.Price,
                 entity.Seats,
-                entity.CourseEventTypeId,
                 venueType,
-                courseEventType,
-                venueType);
+                courseEventType);
         }
 
         protected override CourseEventEntity ToEntity(CourseEvent courseEvent)
@@ -45,7 +43,7 @@ namespace Backend.Infrastructure.Persistence.EFC.Repositories
                 EventDate = courseEvent.EventDate,
                 Price = courseEvent.Price.Value,
                 Seats = courseEvent.Seats,
-                CourseEventTypeId = courseEvent.CourseEventTypeId,
+                CourseEventTypeId = courseEvent.CourseEventType.Id,
                 VenueTypeId = venueType.Id
             };
         }
@@ -158,7 +156,7 @@ namespace Backend.Infrastructure.Persistence.EFC.Repositories
             entity.EventDate = courseEvent.EventDate;
             entity.Price = courseEvent.Price.Value;
             entity.Seats = courseEvent.Seats;
-            entity.CourseEventTypeId = courseEvent.CourseEventTypeId;
+            entity.CourseEventTypeId = courseEvent.CourseEventType.Id;
             entity.VenueTypeId = courseEvent.VenueType.Id;
             entity.ModifiedAtUtc = DateTime.UtcNow;
 

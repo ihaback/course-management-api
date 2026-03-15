@@ -47,18 +47,17 @@ public sealed class Participant
         string lastName,
         string email,
         string phoneNumber,
-        ParticipantContactType? contactType = null)
+        ParticipantContactType? contactType)
         => new(id, firstName, lastName,
             Email.Create(email, nameof(email)),
             PhoneNumber.Create(phoneNumber, nameof(phoneNumber)),
             contactType);
-
     public void Update(
         string firstName,
         string lastName,
         string email,
         string phoneNumber,
-        ParticipantContactType? contactType = null)
+        ParticipantContactType? contactType)
     {
         SetValues(firstName, lastName,
             Email.Create(email, nameof(email)),
@@ -79,12 +78,12 @@ public sealed class Participant
         if (string.IsNullOrWhiteSpace(lastName))
             throw new ArgumentException("Last name cannot be empty or whitespace.", nameof(lastName));
 
-        var resolvedContactType = contactType ?? ParticipantContactType.Reconstitute(1, "Primary");
+        ArgumentNullException.ThrowIfNull(contactType, nameof(contactType));
 
         FirstName = firstName.Trim();
         LastName = lastName.Trim();
         Email = email;
         PhoneNumber = phoneNumber;
-        ContactType = resolvedContactType;
+        ContactType = contactType;
     }
 }

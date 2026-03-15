@@ -31,10 +31,8 @@ namespace Backend.Infrastructure.Persistence.EFC.Repositories
                 entity.EventDate,
                 entity.Price,
                 entity.Seats,
-                entity.CourseEventTypeId,
                 venueType,
-                courseEventType,
-                venueType);
+                courseEventType);
         }
 
         protected override CourseEntity ToEntity(Course course)

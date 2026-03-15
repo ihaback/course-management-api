@@ -16,7 +16,7 @@ public class Instructor_Tests
 
         Assert.Equal(id, instructor.Id);
         Assert.Equal(name, instructor.Name);
-        Assert.Equal(role.Id, instructor.InstructorRoleId);
+        Assert.Equal(role.Id, instructor.Role.Id);
         Assert.Equal(role, instructor.Role);
     }
 
@@ -72,7 +72,7 @@ public class Instructor_Tests
         instructor.Update("John", newRole);
 
         Assert.Equal("John", instructor.Name);
-        Assert.Equal(2, instructor.InstructorRoleId);
+        Assert.Equal(2, instructor.Role.Id);
         Assert.Equal(newRole, instructor.Role);
     }
 

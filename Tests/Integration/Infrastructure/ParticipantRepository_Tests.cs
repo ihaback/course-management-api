@@ -21,7 +21,7 @@ public class ParticipantRepository_Tests(SqliteInMemoryFixture fixture)
     {
         await using var context = fixture.CreateDbContext();
         var repo = new ParticipantRepository(context);
-        var input = Participant.Reconstitute(Guid.NewGuid(), "Ada", "Lovelace", $"ada-{Guid.NewGuid():N}@example.com", "123456789");
+        var input = Participant.Reconstitute(Guid.NewGuid(), "Ada", "Lovelace", $"ada-{Guid.NewGuid():N}@example.com", "123456789", ParticipantContactType.Reconstitute(1, "Primary"));
 
         var created = await repo.AddAsync(
             input,
@@ -94,7 +94,7 @@ public class ParticipantRepository_Tests(SqliteInMemoryFixture fixture)
 
         var updated = await repo.UpdateAsync(
             participant.Id,
-            Participant.Reconstitute(participant.Id, "Updated", "Name", $"updated-{Guid.NewGuid():N}@example.com", "999999"),
+            Participant.Reconstitute(participant.Id, "Updated", "Name", $"updated-{Guid.NewGuid():N}@example.com", "999999", ParticipantContactType.Reconstitute(1, "Primary")),
             CancellationToken.None);
 
         Assert.NotNull(updated);

@@ -35,7 +35,7 @@ public class ParticipantService_Tests
     {
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
-        var expectedParticipant = Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567");
+        var expectedParticipant = Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.AddAsync(Arg.Any<Participant>(), Arg.Any<CancellationToken>())
             .Returns(expectedParticipant);
@@ -268,7 +268,7 @@ public class ParticipantService_Tests
     {
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
-        var expectedParticipant = Participant.Reconstitute(Guid.NewGuid(), firstName, lastName, email, phoneNumber);
+        var expectedParticipant = Participant.Reconstitute(Guid.NewGuid(), firstName, lastName, email, phoneNumber, ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.AddAsync(Arg.Any<Participant>(), Arg.Any<CancellationToken>())
             .Returns(expectedParticipant);
@@ -334,9 +334,9 @@ public class ParticipantService_Tests
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participants = new List<Participant>
         {
-            Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567"),
-            Participant.Reconstitute(Guid.NewGuid(), "Jane", "Smith", "jane.smith@example.com", "+46709876543"),
-            Participant.Reconstitute(Guid.NewGuid(), "Bob", "Johnson", "bob.johnson@example.com", "+46701111111")
+            Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary")),
+            Participant.Reconstitute(Guid.NewGuid(), "Jane", "Smith", "jane.smith@example.com", "+46709876543", ParticipantContactType.Reconstitute(1, "Primary")),
+            Participant.Reconstitute(Guid.NewGuid(), "Bob", "Johnson", "bob.johnson@example.com", "+46701111111", ParticipantContactType.Reconstitute(1, "Primary"))
         };
 
         mockRepo.GetAllAsync(Arg.Any<CancellationToken>())
@@ -405,7 +405,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var participant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var participant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(participant);
@@ -497,8 +497,8 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
-        var updatedParticipant = Participant.Reconstitute(participantId, "John", "Smith", "john.smith@example.com", "+46709876543");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
+        var updatedParticipant = Participant.Reconstitute(participantId, "John", "Smith", "john.smith@example.com", "+46709876543", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -568,7 +568,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         mockRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567"));
+            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary")));
         var service = CreateService(mockRepo);
         var input = new UpdateParticipantInput(Guid.NewGuid(), "", "Doe", "john.doe@example.com", "+46701234567", 1);
 
@@ -588,7 +588,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         mockRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567"));
+            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary")));
         var service = CreateService(mockRepo);
         var input = new UpdateParticipantInput(Guid.NewGuid(), "John", "", "john.doe@example.com", "+46701234567", 1);
 
@@ -608,7 +608,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         mockRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567"));
+            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary")));
         var service = CreateService(mockRepo);
         var input = new UpdateParticipantInput(Guid.NewGuid(), "John", "Doe", "", "+46701234567", 1);
 
@@ -628,7 +628,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         mockRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
-            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567"));
+            .Returns(Participant.Reconstitute(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary")));
         var service = CreateService(mockRepo);
         var input = new UpdateParticipantInput(Guid.NewGuid(), "John", "Doe", "john.doe@example.com", "", 1);
 
@@ -673,7 +673,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -699,7 +699,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -732,7 +732,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -763,7 +763,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -829,7 +829,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -856,7 +856,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);
@@ -883,7 +883,7 @@ public class ParticipantService_Tests
         // Arrange
         var mockRepo = Substitute.For<IParticipantRepository>();
         var participantId = Guid.NewGuid();
-        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567");
+        var existingParticipant = Participant.Reconstitute(participantId, "John", "Doe", "john.doe@example.com", "+46701234567", ParticipantContactType.Reconstitute(1, "Primary"));
 
         mockRepo.GetByIdAsync(participantId, Arg.Any<CancellationToken>())
             .Returns(existingParticipant);

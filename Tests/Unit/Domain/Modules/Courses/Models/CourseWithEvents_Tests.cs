@@ -1,4 +1,5 @@
 using Backend.Domain.Modules.CourseEvents.Models;
+using Backend.Domain.Modules.CourseEventTypes.Models;
 using Backend.Domain.Modules.Courses.Models;
 using Backend.Domain.Modules.VenueTypes.Models;
 
@@ -73,8 +74,8 @@ public class CourseWithEvents_Tests
         var course = Course.Reconstitute(courseId, "Test Course", "Test Description", 10);
         var events = new List<CourseEvent>
         {
-            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow, 1000m, 20, 1, VenueType.Reconstitute(1, "InPerson")),
-            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(1), 1500m, 25, 1, VenueType.Reconstitute(1, "InPerson"))
+            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow, 1000m, 20, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")),
+            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(1), 1500m, 25, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"))
         };
 
         // Act
@@ -93,7 +94,7 @@ public class CourseWithEvents_Tests
         var course = Course.Reconstitute(courseId, "Test Course", "Test Description", 10);
         var events = new List<CourseEvent>
         {
-            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow, 1000m, 20, 1, VenueType.Reconstitute(1, "InPerson"))
+            CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow, 1000m, 20, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"))
         };
 
         // Act
@@ -150,7 +151,7 @@ public class CourseWithEvents_Tests
 
         for (int i = 0; i < 100; i++)
         {
-            events.Add(CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(i), 1000m + i, 20, 1, VenueType.Reconstitute(1, "InPerson")));
+            events.Add(CourseEvent.Reconstitute(Guid.NewGuid(), courseId, DateTime.UtcNow.AddDays(i), 1000m + i, 20, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type")));
         }
 
         // Act
@@ -167,7 +168,7 @@ public class CourseWithEvents_Tests
         var course = Course.Reconstitute(Guid.NewGuid(), "Test Course", "Test Description", 10);
         var events = new List<CourseEvent>
         {
-            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, 1000m, 20, 1, VenueType.Reconstitute(1, "InPerson"))
+            CourseEvent.Reconstitute(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, 1000m, 20, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(1, "Type"))
         };
 
         // Act & Assert

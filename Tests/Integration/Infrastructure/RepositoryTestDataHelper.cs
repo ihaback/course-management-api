@@ -7,6 +7,7 @@ using Backend.Domain.Modules.InPlaceLocations.Models;
 using Backend.Domain.Modules.InstructorRoles.Models;
 using Backend.Domain.Modules.Instructors.Models;
 using Backend.Domain.Modules.Locations.Models;
+using Backend.Domain.Modules.ParticipantContactTypes.Models;
 using Backend.Domain.Modules.Participants.Models;
 using Backend.Domain.Modules.PaymentMethods.Models;
 using Backend.Domain.Modules.VenueTypes.Models;
@@ -50,9 +51,8 @@ internal static class RepositoryTestDataHelper
                 resolvedCourseId,
                 DateTime.UtcNow.AddDays(1),
                 99m,
-                seats,
-                resolvedTypeId,
-                VenueType.Reconstitute(1, "InPerson")),
+                seats, VenueType.Reconstitute(1, "InPerson"),
+                CourseEventType.Reconstitute(resolvedTypeId, "Type")),
             CancellationToken.None);
     }
 
@@ -63,7 +63,8 @@ internal static class RepositoryTestDataHelper
                 "First",
                 "Last",
                 $"participant-{Guid.NewGuid():N}@example.com",
-                "123456789"),
+                "123456789",
+                ParticipantContactType.Reconstitute(1, "Primary")),
             CancellationToken.None);
 
     public static Task<Location> CreateLocationAsync(CoursesOnlineDbContext context)

@@ -1,4 +1,5 @@
 using Backend.Domain.Modules.CourseEvents.Models;
+using Backend.Domain.Modules.CourseEventTypes.Models;
 using Backend.Domain.Modules.VenueTypes.Models;
 using Backend.Infrastructure.Persistence.EFC.Context;
 using Backend.Infrastructure.Persistence.Entities;
@@ -24,7 +25,7 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
         var type = await RepositoryTestDataHelper.CreateCourseEventTypeAsync(context);
         var repo = new CourseEventRepository(context);
 
-        var input = CourseEvent.Reconstitute(Guid.NewGuid(), course.Id, DateTime.UtcNow.AddDays(1), 100m, 10, type.Id, VenueType.Reconstitute(1, "InPerson"));
+        var input = CourseEvent.Reconstitute(Guid.NewGuid(), course.Id, DateTime.UtcNow.AddDays(1), 100m, 10, VenueType.Reconstitute(1, "InPerson"), CourseEventType.Reconstitute(type.Id, "Type"));
         var created = await repo.AddAsync(input, CancellationToken.None);
         var byId = await repo.GetByIdAsync(created.Id, CancellationToken.None);
         var byCourse = await repo.GetCourseEventsByCourseIdAsync(course.Id, CancellationToken.None);
@@ -34,12 +35,12 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
         Assert.Equal(input.Id, created.Id);
         Assert.Equal(input.Id, byId!.Id);
         Assert.Equal(input.CourseId, byId.CourseId);
-        Assert.Equal(input.CourseEventTypeId, byId.CourseEventTypeId);
+        Assert.Equal(input.CourseEventType.Id, byId.CourseEventType.Id);
         Assert.Equal(input.Seats, byId.Seats);
         Assert.Equal(input.Price, byId.Price);
         Assert.Equal(input.VenueType, byId.VenueType);
         Assert.Equal(input.CourseId, created.CourseId);
-        Assert.Equal(input.CourseEventTypeId, created.CourseEventTypeId);
+        Assert.Equal(input.CourseEventType.Id, created.CourseEventType.Id);
         Assert.Equal(input.Seats, created.Seats);
         Assert.Equal(input.Price, created.Price);
         Assert.Equal(input.VenueType, created.VenueType);
@@ -50,7 +51,7 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
 
         Assert.Equal(input.Id, persisted.Id);
         Assert.Equal(input.CourseId, persisted.CourseId);
-        Assert.Equal(input.CourseEventTypeId, persisted.CourseEventTypeId);
+        Assert.Equal(input.CourseEventType.Id, persisted.CourseEventTypeId);
         Assert.Equal(input.Seats, persisted.Seats);
         Assert.Equal(input.Price.Value, persisted.Price);
         Assert.Equal(input.VenueType.Id, persisted.VenueTypeId);
@@ -105,9 +106,8 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
                 courseEvent.CourseId,
                 courseEvent.EventDate.AddDays(2),
                 123m,
-                15,
-                courseEvent.CourseEventTypeId,
-                VenueType.Reconstitute(3, "Hybrid")),
+                15, VenueType.Reconstitute(3, "Hybrid"),
+                CourseEventType.Reconstitute(courseEvent.CourseEventType.Id, "Type")),
             CancellationToken.None);
 
         Assert.NotNull(updated);
@@ -196,9 +196,8 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
                 course.Id,
                 DateTime.UtcNow.AddDays(2),
                 249m,
-                12,
-                type.Id,
-                VenueType.Reconstitute(2, "Online")),
+                12, VenueType.Reconstitute(2, "Online"),
+                CourseEventType.Reconstitute(type.Id, "Type")),
             CancellationToken.None);
 
         var loaded = await repo.GetByIdAsync(created.Id, CancellationToken.None);
@@ -237,9 +236,8 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
                     course.Id,
                     DateTime.UtcNow.AddDays(1),
                     149m,
-                    20,
-                    type.Id,
-                    VenueType.Reconstitute(1, "InPerson")),
+                    20, VenueType.Reconstitute(1, "InPerson"),
+                    CourseEventType.Reconstitute(type.Id, "Type")),
                 CancellationToken.None));
     }
 
@@ -255,8 +253,8 @@ public class CourseEventRepository_Tests(SqliteInMemoryFixture fixture)
             DateTime.UtcNow.AddDays(1),
             199m,
             10,
-            999_999,
-            VenueType.Reconstitute(1, "InPerson"));
+            VenueType.Reconstitute(1, "InPerson"),
+            CourseEventType.Reconstitute(999_999, "Type"));
 
         await Assert.ThrowsAsync<DbUpdateException>(() => repo.AddAsync(input, CancellationToken.None));
     }
