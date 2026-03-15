@@ -197,7 +197,7 @@ public class LocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the location", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData("Drottninggatan 1", "11121", "Stockholm")]
@@ -325,7 +325,7 @@ public class LocationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving locations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -435,7 +435,7 @@ public class LocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the location", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -621,7 +621,7 @@ public class LocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the location", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task UpdateLocationAsync_Should_Return_BadRequest_When_PostalCode_Has_Invalid_Format()
@@ -784,7 +784,7 @@ public class LocationService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the location", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteLocationAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

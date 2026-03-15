@@ -179,7 +179,7 @@ public class CourseRegistrationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the course registration", result.ErrorMessage);
-            }
+    }
 
     public static IEnumerable<object[]> CreateRegistrationStatusAndPaymentData =>
     [
@@ -291,7 +291,7 @@ public class CourseRegistrationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving course registrations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -383,7 +383,7 @@ public class CourseRegistrationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the course registration", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -477,7 +477,7 @@ public class CourseRegistrationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving course registrations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -571,7 +571,7 @@ public class CourseRegistrationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving course registrations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -762,7 +762,7 @@ public class CourseRegistrationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the course registration", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -853,7 +853,7 @@ public class CourseRegistrationService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the course registration", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteCourseRegistrationAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

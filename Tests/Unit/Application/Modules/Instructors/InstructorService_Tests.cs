@@ -129,7 +129,7 @@ public class InstructorService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the instructor", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData("Dr. Jane Smith")]
@@ -238,7 +238,7 @@ public class InstructorService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving instructors", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -330,7 +330,7 @@ public class InstructorService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the instructor", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -497,7 +497,7 @@ public class InstructorService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the instructor", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -621,7 +621,7 @@ public class InstructorService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the instructor", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteInstructorAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

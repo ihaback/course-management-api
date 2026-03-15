@@ -197,7 +197,7 @@ public class InPlaceLocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the in-place location", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData(1, 101, 30)]
@@ -305,7 +305,7 @@ public class InPlaceLocationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving in-place locations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -417,7 +417,7 @@ public class InPlaceLocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the in-place location", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -529,7 +529,7 @@ public class InPlaceLocationService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving in-place locations", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -716,7 +716,7 @@ public class InPlaceLocationService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the in-place location", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task UpdateInPlaceLocationAsync_Should_Return_Conflict_When_Repository_Throws_DbUpdateException()
@@ -885,7 +885,7 @@ public class InPlaceLocationService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the in-place location", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteInPlaceLocationAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

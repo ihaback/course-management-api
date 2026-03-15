@@ -196,7 +196,7 @@ public class CourseService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the course", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData("C# Basics", "Learn C#", 10)]
@@ -332,7 +332,7 @@ public class CourseService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving courses", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -425,7 +425,7 @@ public class CourseService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the course", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -642,7 +642,7 @@ public class CourseService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the course", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -769,7 +769,7 @@ public class CourseService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the course", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteCourseAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

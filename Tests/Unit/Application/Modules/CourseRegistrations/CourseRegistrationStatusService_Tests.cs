@@ -175,7 +175,7 @@ public class CourseRegistrationStatusService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving the course registration status", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task Delete_Should_Return_400_For_Negative_Id()
@@ -376,7 +376,7 @@ public class CourseRegistrationStatusService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while updating the course registration status", result.ErrorMessage);
-                cache.DidNotReceive().SetEntity(Arg.Any<CourseRegistrationStatus>());
+        cache.DidNotReceive().SetEntity(Arg.Any<CourseRegistrationStatus>());
     }
 
     [Fact]

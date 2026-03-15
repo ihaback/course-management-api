@@ -257,7 +257,7 @@ public class ParticipantService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the participant", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData("Alice", "Smith", "alice.smith@example.com", "+46709876543")]
@@ -393,7 +393,7 @@ public class ParticipantService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving participants", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -485,7 +485,7 @@ public class ParticipantService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the participant", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -718,7 +718,7 @@ public class ParticipantService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the participant", result.ErrorMessage);
-            }
+    }
 
     [Theory]
     [InlineData("john.doe")]
@@ -875,7 +875,7 @@ public class ParticipantService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the participant", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task DeleteParticipantAsync_Should_Return_InternalServerError_When_Delete_Returns_False()

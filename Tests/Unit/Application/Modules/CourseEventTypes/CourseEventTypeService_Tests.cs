@@ -132,7 +132,7 @@ public class CourseEventTypeService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while creating the course event type", result.ErrorMessage);
-            }
+    }
 
     [Fact]
     public async Task CreateCourseEventTypeAsync_Should_Return_BadRequest_When_TypeName_Already_Exists()
@@ -261,7 +261,7 @@ public class CourseEventTypeService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving course event types", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -335,7 +335,7 @@ public class CourseEventTypeService_Tests
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Contains("An error occurred while retrieving the course event type", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -449,7 +449,7 @@ public class CourseEventTypeService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while retrieving the course event type", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -619,7 +619,7 @@ public class CourseEventTypeService_Tests
         Assert.Equal(ErrorTypes.Error, result.ErrorType);
         Assert.Null(result.Value);
         Assert.Contains("An error occurred while updating the course event type", result.ErrorMessage);
-            }
+    }
 
     #endregion
 
@@ -784,7 +784,7 @@ public class CourseEventTypeService_Tests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(ErrorTypes.Error, result.ErrorType);        Assert.Contains("An error occurred while deleting the course event type", result.ErrorMessage);
-            }
+    }
 
     #endregion
 }
