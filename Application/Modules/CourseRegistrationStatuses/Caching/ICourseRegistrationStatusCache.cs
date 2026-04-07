@@ -7,4 +7,5 @@ public interface ICourseRegistrationStatusCache : ICacheEntityBase<CourseRegistr
 {
     Task<IReadOnlyList<CourseRegistrationStatus>> GetAllAsync(Func<CancellationToken, Task<IReadOnlyList<CourseRegistrationStatus>>> factory, CancellationToken ct);
     Task<CourseRegistrationStatus?> GetByIdAsync(int id, Func<CancellationToken, Task<CourseRegistrationStatus?>> factory, CancellationToken ct);
+    Task<CourseRegistrationStatus?> GetByNameAsync(string name, Func<CancellationToken, Task<CourseRegistrationStatus?>> factory, CancellationToken ct);
 }

@@ -112,15 +112,18 @@ public sealed class ParticipantContactTypeService(IParticipantContactTypeCache c
             if (input == null)
                 return Result<ParticipantContactType>.BadRequest("Participant contact type cannot be null.");
 
+            if (string.IsNullOrWhiteSpace(input.Name))
+                return Result<ParticipantContactType>.BadRequest("Name cannot be empty or whitespace.");
+
             var existingParticipantContactType = await _repository.GetByIdAsync(input.Id, cancellationToken);
             if (existingParticipantContactType == null)
                 return Result<ParticipantContactType>.NotFound($"Participant contact type with ID '{input.Id}' not found.");
 
+            _cache.ResetEntity(existingParticipantContactType);
             existingParticipantContactType.Update(input.Name);
             var updatedParticipantContactType = await _repository.UpdateAsync(existingParticipantContactType.Id, existingParticipantContactType, cancellationToken);
             if (updatedParticipantContactType == null)
                 return Result<ParticipantContactType>.Error("Failed to update participant contact type.");
-            _cache.ResetEntity(existingParticipantContactType);
             _cache.SetEntity(updatedParticipantContactType);
 
             return Result<ParticipantContactType>.Ok(updatedParticipantContactType);

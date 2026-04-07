@@ -23,6 +23,9 @@ public class CourseRegistrationStatusService_Tests
         cache.GetByIdAsync(Arg.Any<int>(), Arg.Any<Func<CancellationToken, Task<CourseRegistrationStatus?>>>(), Arg.Any<CancellationToken>())
             .Returns(ci => ci.Arg<Func<CancellationToken, Task<CourseRegistrationStatus?>>>()(ci.Arg<CancellationToken>()));
 
+        cache.GetByNameAsync(Arg.Any<string>(), Arg.Any<Func<CancellationToken, Task<CourseRegistrationStatus?>>>(), Arg.Any<CancellationToken>())
+            .Returns(ci => ci.Arg<Func<CancellationToken, Task<CourseRegistrationStatus?>>>()(ci.Arg<CancellationToken>()));
+
         return new CourseRegistrationStatusService(cache, repo);
     }
 

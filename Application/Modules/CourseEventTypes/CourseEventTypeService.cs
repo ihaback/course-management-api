@@ -96,7 +96,10 @@ public sealed class CourseEventTypeService(ICourseEventTypeCache cache, ICourseE
                 return Result<CourseEventType>.BadRequest("Course event type name is required.");
             }
 
-            var courseEventType = await _courseEventTypeRepository.GetCourseEventTypeByTypeNameAsync(typeName, cancellationToken);
+            var courseEventType = await _cache.GetByNameAsync(
+                typeName,
+                token => _courseEventTypeRepository.GetCourseEventTypeByTypeNameAsync(typeName, token),
+                cancellationToken);
 
             if (courseEventType == null)
             {
@@ -120,6 +123,11 @@ public sealed class CourseEventTypeService(ICourseEventTypeCache cache, ICourseE
                 return Result<CourseEventType>.BadRequest("Course event type cannot be null.");
             }
 
+            if (string.IsNullOrWhiteSpace(courseEventType.Name))
+            {
+                return Result<CourseEventType>.BadRequest("Type name cannot be empty or whitespace.");
+            }
+
             var existingCourseEventType = await _courseEventTypeRepository.GetByIdAsync(courseEventType.Id, cancellationToken);
 
             if (existingCourseEventType == null)
@@ -127,6 +135,7 @@ public sealed class CourseEventTypeService(ICourseEventTypeCache cache, ICourseE
                 return Result<CourseEventType>.NotFound($"Course event type with ID '{courseEventType.Id}' not found.");
             }
 
+            _cache.ResetEntity(existingCourseEventType);
             existingCourseEventType.Update(courseEventType.Name);
 
             var updatedCourseEventType = await _courseEventTypeRepository.UpdateAsync(existingCourseEventType.Id, existingCourseEventType, cancellationToken);
@@ -136,7 +145,6 @@ public sealed class CourseEventTypeService(ICourseEventTypeCache cache, ICourseE
                 return Result<CourseEventType>.Error("Failed to update course event type.");
             }
 
-            _cache.ResetEntity(existingCourseEventType);
             _cache.SetEntity(updatedCourseEventType);
 
             return Result<CourseEventType>.Ok(updatedCourseEventType);

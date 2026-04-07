@@ -112,15 +112,18 @@ public sealed class PaymentMethodService(IPaymentMethodCache cache, IPaymentMeth
             if (input == null)
                 return Result<PaymentMethodModel>.BadRequest("Payment method cannot be null.");
 
+            if (string.IsNullOrWhiteSpace(input.Name))
+                return Result<PaymentMethodModel>.BadRequest("Name cannot be empty or whitespace.");
+
             var existingPaymentMethod = await _repository.GetByIdAsync(input.Id, cancellationToken);
             if (existingPaymentMethod == null)
                 return Result<PaymentMethodModel>.NotFound($"Payment method with ID '{input.Id}' not found.");
 
+            _cache.ResetEntity(existingPaymentMethod);
             existingPaymentMethod.Update(input.Name);
             var updatedPaymentMethod = await _repository.UpdateAsync(existingPaymentMethod.Id, existingPaymentMethod, cancellationToken);
             if (updatedPaymentMethod == null)
                 return Result<PaymentMethodModel>.Error("Failed to update payment method.");
-            _cache.ResetEntity(existingPaymentMethod);
             _cache.SetEntity(updatedPaymentMethod);
 
             return Result<PaymentMethodModel>.Ok(updatedPaymentMethod);

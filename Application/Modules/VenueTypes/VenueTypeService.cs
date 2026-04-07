@@ -112,15 +112,18 @@ public sealed class VenueTypeService(IVenueTypeCache cache, IVenueTypeRepository
             if (input == null)
                 return Result<VenueType>.BadRequest("Venue type cannot be null.");
 
+            if (string.IsNullOrWhiteSpace(input.Name))
+                return Result<VenueType>.BadRequest("Name cannot be empty or whitespace.");
+
             var existingVenueType = await _repository.GetByIdAsync(input.Id, cancellationToken);
             if (existingVenueType == null)
                 return Result<VenueType>.NotFound($"Venue type with ID '{input.Id}' not found.");
 
+            _cache.ResetEntity(existingVenueType);
             existingVenueType.Update(input.Name);
             var updatedVenueType = await _repository.UpdateAsync(existingVenueType.Id, existingVenueType, cancellationToken);
             if (updatedVenueType == null)
                 return Result<VenueType>.Error("Failed to update venue type.");
-            _cache.ResetEntity(existingVenueType);
             _cache.SetEntity(updatedVenueType);
 
             return Result<VenueType>.Ok(updatedVenueType);

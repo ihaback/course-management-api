@@ -224,11 +224,9 @@ else
 
 ## Caching
 
-Caching lives in the **Application layer** — never in repositories. Only lookup/reference entities are cached (entities that are read frequently and rarely change).
+Frequently-read, rarely-changed lookup entities (venue types, payment methods, etc.) are cached in memory by the Application layer. Each entity can be looked up by ID, by name, or as a full list — and all cached entries for an entity are cleared on any write.
 
-- Base abstractions: `CacheEntityBase`, `ICacheEntityBase<TEntity, TId>`, `MemoryCacheExtensions`
-- Concrete caches: `CourseEventTypeCache`, `CourseRegistrationStatusCache`, `InstructorRoleCache`, `PaymentMethodCache`, `VenueTypeCache`, `ParticipantContactTypeCache`
-- Cache is invalidated on any write operation
+One thing worth noting: when renaming an entity, the cache has to be told to remove the **old** name **before** the entity is updated. The eviction reads the name off the object, so if the update happens first, it evicts the wrong key and the old name stays stale in cache. The service layer enforces the correct order, and there are tests that verify this.
 
 ---
 
@@ -239,6 +237,7 @@ Caching lives in the **Application layer** — never in repositories. Only looku
 | Type | Coverage | Technology |
 |------|-------|-----------|
 | Unit | Domain models, services, Value Objects, input DTOs | NSubstitute mocks, no DB |
+| Cache integration | Cache eviction and lookup behaviour | Real `MemoryCache`, no DB |
 | Integration | Every repository | SQLite in-memory via `SqliteInMemoryFixture` |
 | E2E | Every endpoint | `WebApplicationFactory` + SQLite in-memory, HTTP round-trips |
 
@@ -248,6 +247,14 @@ Caching lives in the **Application layer** — never in repositories. Only looku
 - Value Object tests: `Email`, `PhoneNumber`, `Price` — valid/invalid inputs, equality, operators
 - Application service tests: all CRUD flows, result states, NSubstitute mocks for repositories
 - Input DTO validation tests
+
+### Cache integration tests
+
+Regular unit tests use mocks, which only check *whether* a method was called — not *what state the data was in* when it was called. For caching, that's not enough: the order of operations matters.
+
+These tests use a real `MemoryCache` instead of a mock, so they can actually check what ends up stored and what gets evicted. For example, after renaming an entity, the test looks up the old name and the new name directly in the cache to confirm the old one is gone and the new one is there.
+
+There's also a test that deliberately does things in the **wrong** order to show the bug it would cause — proving the correct order is actually necessary, not just a style choice.
 
 ### Integration tests
 

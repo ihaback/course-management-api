@@ -93,12 +93,18 @@ public sealed class InstructorRoleService(IInstructorRoleCache cache, IInstructo
                 return Result<InstructorRole>.BadRequest("Id must be greater than zero.");
             }
 
+            if (string.IsNullOrWhiteSpace(input.Name))
+            {
+                return Result<InstructorRole>.BadRequest("Name cannot be empty or whitespace.");
+            }
+
             var existingRole = await _repository.GetByIdAsync(input.Id, cancellationToken);
             if (existingRole == null)
             {
                 return Result<InstructorRole>.NotFound($"Instructor role with ID '{input.Id}' not found.");
             }
 
+            _cache.ResetEntity(existingRole);
             existingRole.Update(input.Name);
             var updatedInstructorRole = await _repository.UpdateAsync(existingRole.Id, existingRole, cancellationToken);
             if (updatedInstructorRole == null)
@@ -106,7 +112,6 @@ public sealed class InstructorRoleService(IInstructorRoleCache cache, IInstructo
                 return Result<InstructorRole>.NotFound($"Instructor role with ID '{input.Id}' not found.");
             }
 
-            _cache.ResetEntity(existingRole);
             _cache.SetEntity(updatedInstructorRole);
 
             return Result<InstructorRole>.Ok(updatedInstructorRole);

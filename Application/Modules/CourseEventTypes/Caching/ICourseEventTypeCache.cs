@@ -7,4 +7,5 @@ public interface ICourseEventTypeCache : ICacheEntityBase<CourseEventType, int>
 {
     Task<IReadOnlyList<CourseEventType>> GetAllAsync(Func<CancellationToken, Task<IReadOnlyList<CourseEventType>>> factory, CancellationToken ct);
     Task<CourseEventType?> GetByIdAsync(int id, Func<CancellationToken, Task<CourseEventType?>> factory, CancellationToken ct);
+    Task<CourseEventType?> GetByNameAsync(string name, Func<CancellationToken, Task<CourseEventType?>> factory, CancellationToken ct);
 }

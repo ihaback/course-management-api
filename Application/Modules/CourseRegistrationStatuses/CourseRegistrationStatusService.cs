@@ -94,7 +94,10 @@ public sealed class CourseRegistrationStatusService(ICourseRegistrationStatusCac
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name is required.", nameof(name));
 
-            var status = await _repository.GetCourseRegistrationStatusByNameAsync(name, cancellationToken);
+            var status = await _cache.GetByNameAsync(
+                name,
+                token => _repository.GetCourseRegistrationStatusByNameAsync(name, token),
+                cancellationToken);
 
             if (status == null)
             {
@@ -122,12 +125,16 @@ public sealed class CourseRegistrationStatusService(ICourseRegistrationStatusCac
                 return Result<CourseRegistrationStatus>.BadRequest("Course registration status cannot be null.");
             }
 
+            if (string.IsNullOrWhiteSpace(input.Name))
+                return Result<CourseRegistrationStatus>.BadRequest("Name cannot be empty or whitespace.");
+
             var existingStatus = await _repository.GetByIdAsync(input.Id, cancellationToken);
             if (existingStatus == null)
             {
                 return Result<CourseRegistrationStatus>.NotFound($"Course registration status with ID '{input.Id}' not found.");
             }
 
+            _cache.ResetEntity(existingStatus);
             existingStatus.Update(input.Name);
             var updatedStatus = await _repository.UpdateAsync(existingStatus.Id, existingStatus, cancellationToken);
 
@@ -136,7 +143,6 @@ public sealed class CourseRegistrationStatusService(ICourseRegistrationStatusCac
                 return Result<CourseRegistrationStatus>.Error("Failed to update course registration status.");
             }
 
-            _cache.ResetEntity(existingStatus);
             _cache.SetEntity(updatedStatus);
 
             return Result<CourseRegistrationStatus>.Ok(updatedStatus);
